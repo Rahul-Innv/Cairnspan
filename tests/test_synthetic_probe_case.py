@@ -18,6 +18,14 @@ from cli_version import probe_cli_version, version_probe_env  # noqa: E402
 from synthetic_probe_case import command_sha256, sha256_file, synthetic_view_png  # noqa: E402
 
 
+@unittest.skipUnless(
+    sys.platform == "win32",
+    "Every probe case pins the running interpreter as the native Codex binary; "
+    "the pinned-native-binary policy relies on Windows-only file-metadata "
+    "semantics (symlink/reparse-point identity checks) that reject standard "
+    "Linux interpreter paths such as the symlinked /usr/local/bin/python3, so "
+    "off Windows every case fails at prepare or passes for the wrong reason",
+)
 class SyntheticProbeCaseTest(unittest.TestCase):
     def run_case(self, *args: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(

@@ -30,6 +30,14 @@ def write_text(path: Path, value: str) -> None:
     path.write_text(value, encoding="utf-8", newline="\n")
 
 
+@unittest.skipUnless(
+    sys.platform == "win32",
+    "Every parent case pins the running interpreter as the target binary; the "
+    "pinned-native-binary policy relies on Windows-only file-metadata semantics "
+    "(symlink/reparse-point identity checks) that reject standard Linux "
+    "interpreter paths such as the symlinked /usr/local/bin/python3, so off "
+    "Windows every case fails at prepare or passes for the wrong reason",
+)
 class HostileWriteCaseTest(unittest.TestCase):
     def run_case(self, *args: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(

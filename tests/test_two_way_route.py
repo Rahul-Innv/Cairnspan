@@ -14,6 +14,14 @@ ROOT = Path(__file__).resolve().parents[1]
 ROUTE = ROOT / "skills" / "cairnspan" / "scripts" / "run_two_way_route.py"
 
 
+EXECUTED_ROUTE_REASON = (
+    "Executed-route closure requires the Windows Job Object containment mode "
+    "('job-object') in every edge receipt; POSIX launchers record process-group "
+    "cleanup, which closure rejects by design because a hostile child can "
+    "escape its process group, so executed-route semantics are Windows-only"
+)
+
+
 class TwoWayRouteTest(unittest.TestCase):
     def make_fake_agent(self, root: Path, agent: str) -> Path:
         script = root / f"fake_{agent}.py"
@@ -200,6 +208,7 @@ class TwoWayRouteTest(unittest.TestCase):
     def read_summary(self, out_dir: Path) -> dict:
         return json.loads((out_dir / "route-summary.json").read_text(encoding="utf-8"))
 
+    @unittest.skipUnless(sys.platform == "win32", EXECUTED_ROUTE_REASON)
     def test_success_writes_linked_closure(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             result, out_dir = self.run_route(Path(tmp))
@@ -237,6 +246,7 @@ class TwoWayRouteTest(unittest.TestCase):
             self.assertEqual(summary["edge_attempts"], 2)
             self.assertFalse((out_dir / "closure.json").exists())
 
+    @unittest.skipUnless(sys.platform == "win32", EXECUTED_ROUTE_REASON)
     def test_claude_first_success_writes_ordered_linked_closure(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             result, out_dir = self.run_route(Path(tmp), extra_args=["--route-order", "claude-first"])
@@ -307,6 +317,7 @@ class TwoWayRouteTest(unittest.TestCase):
             self.assertEqual(summary["edge_attempts"], 0)
             self.assertFalse((out_dir / "edges" / "codex").exists())
 
+    @unittest.skipUnless(sys.platform == "win32", EXECUTED_ROUTE_REASON)
     def test_nonce_mismatch_stops_before_second_edge(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             result, out_dir = self.run_route(Path(tmp), env_overrides={"FAKE_CODEX_MODE": "nonce_mismatch"})
@@ -327,6 +338,7 @@ class TwoWayRouteTest(unittest.TestCase):
             self.assertEqual(summary["error_kind"], "target_failure")
             self.assertEqual(summary["edge_attempts"], 1)
 
+    @unittest.skipUnless(sys.platform == "win32", EXECUTED_ROUTE_REASON)
     def test_second_edge_failure_has_no_closure(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             result, out_dir = self.run_route(Path(tmp), env_overrides={"FAKE_CLAUDE_MODE": "failure"})
@@ -368,6 +380,7 @@ class TwoWayRouteTest(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertEqual(self.read_summary(out_dir)["error_kind"], "policy")
 
+    @unittest.skipUnless(sys.platform == "win32", EXECUTED_ROUTE_REASON)
     def test_strict_manifest_catches_runtime_prefixed_workspace_change(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             result, out_dir = self.run_route(Path(tmp), env_overrides={"FAKE_CODEX_MODE": "workspace_modify"})

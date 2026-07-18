@@ -1659,6 +1659,14 @@ class ClaudeLauncherTest(unittest.TestCase):
             )
             self.assertEqual(accepted.returncode, 0, accepted.stderr)
 
+    @unittest.skipUnless(
+        sys.platform == "win32",
+        "Replacement detection compares (st_dev, st_ino); NTFS does not "
+        "immediately reuse a deleted file's file ID, but Linux filesystems can "
+        "reassign the freed inode number to the replacement file, making the "
+        "swap indistinguishable, so this check is Windows-only file-metadata "
+        "semantics",
+    )
     def test_capture_identity_detects_path_replacement(self) -> None:
         namespace = runpy.run_path(str(LAUNCHER))
         with tempfile.TemporaryDirectory() as tmp:

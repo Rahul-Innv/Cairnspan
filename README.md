@@ -54,6 +54,12 @@ Do not describe Cairnspan as production-ready. The bounded two-agent text route 
 
 Do not describe Cairnspan as enterprise-ready or three-agent capable until the adapter contract, routing policy, data-classification gates, provider-boundary receipts, and multi-target pressure tests in `docs/verification.md` are complete.
 
+## Platform support
+
+The session tooling is developed and validated on Windows. Linux CI runs the
+platform-neutral subset; suites that depend on Windows-only file-metadata
+semantics or Job Object containment are skipped off Windows.
+
 ## Why It Exists
 
 The long-term goal is governed multi-agent interaction: route each bounded task

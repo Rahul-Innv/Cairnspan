@@ -1809,6 +1809,13 @@ class LauncherTest(unittest.TestCase):
             self.assertEqual(summary["terminal_event_count"], 2)
             self.assertEqual(summary["error_kind"], "protocol")
 
+    @unittest.skipUnless(
+        sys.platform == "win32",
+        "Killing a descendant that survives normal target exit relies on "
+        "Windows Job Object kill-on-close containment; POSIX process-group "
+        "cleanup cannot guarantee termination of an escaped descendant, so the "
+        "surviving child outlives the launcher off Windows",
+    )
     def test_normal_target_exit_with_surviving_child_fails_and_kills_child(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             temp_dir = Path(tmp)
@@ -1877,6 +1884,14 @@ class LauncherTest(unittest.TestCase):
             )
             self.assertEqual(accepted.returncode, 0, accepted.stderr)
 
+    @unittest.skipUnless(
+        sys.platform == "win32",
+        "Replacement detection compares (st_dev, st_ino); NTFS does not "
+        "immediately reuse a deleted file's file ID, but Linux filesystems can "
+        "reassign the freed inode number to the replacement file, making the "
+        "swap indistinguishable, so this check is Windows-only file-metadata "
+        "semantics",
+    )
     def test_capture_identity_detects_path_replacement(self) -> None:
         namespace = runpy.run_path(str(LAUNCHER))
         with tempfile.TemporaryDirectory() as tmp:
