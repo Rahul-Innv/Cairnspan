@@ -4,13 +4,20 @@
 
 # Cairnspan
 
+[![pipeline status](https://gitlab.com/krahul02004/Cairnspan/badges/main/pipeline.svg)](https://gitlab.com/krahul02004/Cairnspan/-/commits/main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Cairnspan is a local coordination layer for multi-agent, OAuth-backed delegation between coding agents such as Claude Code, Codex, Cursor, Gemini, and future local AI clients.
 
 It is meant to let different agents use their individual strengths and capabilities through the user's already-authenticated local clients. It is designed not to broker OAuth tokens, wrap raw model APIs as the primary path, or pretend that different agents share tools, context, approvals, auth, or runtime state.
 
 ## Status
 
-Private alpha preparing for `0.1.0-alpha.1`. The core two-agent paths now have repeated live evidence, sanitized fixtures, and a copied-skill install proof. Keep the repository private until the public-alpha gate in `docs/release-readiness.md` passes against one clean tagged commit.
+Source-public alpha preparing for `0.1.0-alpha.1`, hosted at
+[gitlab.com/krahul02004/Cairnspan](https://gitlab.com/krahul02004/Cairnspan). The core two-agent
+paths now have repeated live evidence, sanitized fixtures, and a copied-skill install proof. The
+public-alpha gate in `docs/release-readiness.md` must still pass against one clean tagged commit
+before any tagged `0.1.0-alpha.1` release claim.
 
 **Cairnspan** is the owner-selected working public name and the current source
 identity. Display text, skill paths, runtime defaults, schemas, tests, receipt
@@ -85,7 +92,19 @@ The core path has no Cairnspan server, daemon, database, or hosted backend. It l
 
 ## Quick Start
 
-Cairnspan is not packaged yet. Use it from a checkout by running the launcher script directly.
+Cairnspan is not yet published on PyPI. Install from a clone to get the `cairnspan` console
+dispatcher, or run the launcher scripts directly from the checkout:
+
+```powershell
+git clone https://gitlab.com/krahul02004/Cairnspan.git
+cd Cairnspan
+pip install .
+cairnspan --help
+```
+
+Each `cairnspan <tool>` subcommand runs the corresponding standalone script in a child
+interpreter, so the scripts' documented command-line contracts, receipts, and fail-closed
+behavior are unchanged.
 
 The first public target is a pinned, Windows-only, owner-local two-agent source
 alpha. Public source availability will not make POSIX closure authoritative,
