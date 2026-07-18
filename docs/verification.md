@@ -1,5 +1,46 @@
 # Cairnspan Verification
 
+## Status Ledger
+
+This bullet ledger was maintained at the top of the README until 2026-07-18 and
+is preserved verbatim here. The README now carries a condensed "What's
+verified" table that links to this section.
+
+Current state:
+
+- Implemented: hardened Codex and Claude Code launchers with structured receipts, fail-closed protocol parsing, receipt-path isolation for write-capable runs, fail-closed Windows Job Object containment, bounded output/runtime, and deny-by-default unattended profiles.
+- Verified: Claude Code to Codex probes for basic text, read-only, workspace-write, MCP visibility, and built-in image generation.
+- Verified: Codex to Claude Code basic and strict-MCP/no-tools/no-edit probes.
+- Verified: the parent-orchestrated Codex-to-Claude text route closed live on 2026-07-10 in 27.375 seconds with two exact nonce artifacts, two terminal receipts, zero tool/MCP calls, unchanged strict workspace manifests, no surviving descendants, linked receipt hashes, and `$0.019557` reported Claude cost. Codex cost was not reported by its CLI and is recorded as unknown, not zero.
+- Verified: a fresh hardened repetition closed in 15.86 seconds for `$0.019726` reported Claude cost; a network-denied attempt failed before Claude launch and left both workspaces unchanged.
+- Verified: the shared-folder Codex-to-Claude-to-Codex mailbox route closed on synthetic public data with exact request/response linkage, one terminal response, scoped writes, read-only consumption, and parent-owned manifests.
+- Verified: the typed Claude-design-to-Codex-image route produced one 512x512 static PNG and closed with no product integration. A hardened live repetition also closed after owner visual approval, with bounded decompression, strict core/display-chunk policy, APNG denial, exact design-spec-to-generation-prompt binding, `job-object` containment, and exact manifests.
+- Compatibility warning: that image-generation evidence predates the current
+  `codex-cli 0.144.0-alpha.4` image-tool report. A Fable run reported native
+  image attachments still working while `$imagegen` said its code-mode host was
+  missing and `view_image` failed to start. Offline feature inspection shows
+  both flags enabled but cannot prove runtime startup. Current image-tool probes
+  must use `--require-image-capability` and close only on observed tool events.
+- Verified: live hostile-workspace probes against both native clients ignored synthetic poisoned project instructions under strict isolation. Both returned exact markers with zero tools/MCP/web use, unchanged strict manifests, no canary disclosure or outside write, one terminal identity, and verified Job Object cleanup.
+- Deterministic only: both launchers now expose a typed
+  `hostile-workspace-write` profile with canonical nonce prompts, fixed result
+  paths, native version pins, protected sibling sentinels, parent-controlled
+  receipts, narrow write-tool allowlists, and strict before/after manifests.
+  Six fake-target cases pass; no write-enabled native-client matrix case has
+  been authorized or live-run.
+- Deterministic only: `hostile_write_case.py` prepares an immutable single-case
+  plan with separate dry-run/live receipt roots, closes both command-specific
+  summaries plus exact success or authoritative denial evidence, and performs
+  guarded parent-owned cleanup of only the disposable workspace. The closer
+  independently recomputes workspace deltas, exact output bytes, sentinel
+  state, and case-specific denial evidence instead of trusting the target
+  summary alone. Seventeen parent-case tests pass; the helper never launches a
+  provider itself.
+- Verified: the repo-scoped copied-skill path validates, compiles, passes `doctor.py` with explicit native clients, and dry-runs both launchers from the clean copy.
+- Caveat: default `codex` still resolves to a WindowsApps package path that PowerShell/Python cannot start unattended. Pass an explicit local Codex CLI path with `--codex-bin`.
+- Not yet verified: a broader repeated/crash/quota/rate-limit matrix against native clients, live canary egress probes, packaging/signing, or a third adapter.
+- Planned: finish the remaining Phase 1 pressure gates, then add an adapter contract and policy engine before choosing the first third adapter, with Cursor and Gemini as current candidates.
+
 ## Naming
 
 - [x] Checked obvious exact-name collisions for Agent Parley and Claude/Codex coordination variants on 2026-07-08.
