@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/logo.png" alt="Cairnspan logo" width="180">
+</p>
+
 # Cairnspan
 
 Cairnspan is a local coordination layer for multi-agent, OAuth-backed delegation between coding agents such as Claude Code, Codex, Cursor, Gemini, and future local AI clients.
