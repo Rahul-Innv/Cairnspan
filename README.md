@@ -11,9 +11,15 @@ Cairnspan is a local coordination layer for multi-agent, OAuth-backed delegation
 
 It is meant to let different agents use their individual strengths through the user's already-authenticated local clients. It is designed not to broker OAuth tokens, wrap raw model APIs as the primary path, or pretend that different agents share tools, context, approvals, auth, or runtime state.
 
+## Getting started
+
+- **Prerequisites:** Python 3.11 or newer. Cairnspan is developed and validated on Windows (Linux CI runs the platform-neutral subset).
+- **Install:** Cairnspan is not on PyPI yet, so install from a clone. Run `git clone https://gitlab.com/krahul02004/Cairnspan.git`, `cd Cairnspan`, then `pip install .`. That gives you the `cairnspan` console dispatcher. Fuller setup, including the dry-run-first workflow, is under [Quick Start](#quick-start).
+- **Check it works:** run `cairnspan doctor`. It runs a local, offline health check and prints one line per check plus an overall status token (for example `cairnspan-doctor-warn` when a local Codex or Claude binary resolves to an npm shell wrapper).
+
 ## 30-second demo
 
-Every run — including a dry run — produces a machine-readable receipt before any provider is touched:
+Every run (including a dry run) produces a machine-readable receipt before any provider is touched:
 
 ```powershell
 git clone https://gitlab.com/krahul02004/Cairnspan.git
@@ -84,9 +90,9 @@ against one clean tagged commit before any tagged release claim.
 | Hostile-workspace probes against both native clients | Synthetic poisoned project instructions were ignored: exact markers, zero tools/MCP/web use, unchanged strict manifests, no planted canary secret disclosed, verified Job Object cleanup | by 2026-07-17 |
 | Typed Claude-design → Codex-image artifact route | One 512x512 static PNG accepted after owner visual approval, with bounded decompression, APNG denial, and exact manifests | by 2026-07-17 |
 
-The full bullet-by-bullet ledger — including the shared-folder mailbox route, the
+The full bullet-by-bullet ledger (including the shared-folder mailbox route, the
 copied-skill install proof, the deterministic-only hostile-write profiles, known caveats,
-and the open gates — is preserved in [`docs/verification.md`](docs/verification.md).
+and the open gates) is preserved in [`docs/verification.md`](docs/verification.md).
 
 Do not describe Cairnspan as production-ready. Do not describe Cairnspan as enterprise-ready or three-agent capable until the adapter contract, routing policy, data-classification gates, provider-boundary receipts, and multi-target pressure tests in `docs/verification.md` are complete; the bounded two-agent routes above are what is verified today.
 
@@ -112,7 +118,7 @@ Do not describe Cairnspan as production-ready. Do not describe Cairnspan as ente
 - On Windows, inability to attach the suspended target to a kill-on-close Job Object prevents target execution. Successful summaries record the containment mode, and route closures require it.
 - POSIX launchers currently record process-group cleanup, but authoritative route/artifact closure rejects it because a hostile child can create a new session and escape. Stronger POSIX containment and live tests remain release gates.
 
-The deny-by-default posture is visible in the receipts themselves. The reverse edge's dry run records the exact hardened Claude command before anything launches — real output, trimmed:
+The deny-by-default posture is visible in the receipts themselves. The reverse edge's dry run records the exact hardened Claude command before anything launches. Real output, trimmed:
 
 ```json
 {
@@ -180,7 +186,7 @@ python skills\cairnspan\scripts\run_two_way_route.py `
   --dry-run
 ```
 
-The dry run writes an immutable `route-plan.json` and a `route-summary.json` that pin both executables and prove both disposable workspaces untouched — real output, trimmed:
+The dry run writes an immutable `route-plan.json` and a `route-summary.json` that pin both executables and prove both disposable workspaces untouched. Real output, trimmed:
 
 ```json
 {
