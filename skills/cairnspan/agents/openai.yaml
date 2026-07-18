@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cairnspan"
+  short_description: "Coordinate Claude Code and Codex"
+  default_prompt: "Use $cairnspan to hand this task to the right OAuth-backed local agent and return the thread id, logs, final result, and blockers."

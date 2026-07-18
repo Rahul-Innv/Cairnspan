@@ -1,0 +1,38 @@
+This is a workspace-write Codex image generation capability probe.
+
+Goal:
+Use the launched Codex session's built-in image generation capability (`$imagegen` / built-in image_gen path) to create exactly one small PNG image artifact and place it inside the target workspace.
+
+Do not use CLI/API fallback.
+Do not require or ask for `OPENAI_API_KEY`.
+Do not modify source files.
+Do not create more than one final image artifact.
+
+Requested image:
+- A simple square test image for Cairnspan verification.
+- Subject: a small blue paper boat on a white background.
+- Style: clean flat illustration.
+- No text, no logo, no watermark.
+
+Required workspace output:
+
+.cairnspan-imagegen/probe-image.png
+
+Instructions:
+1. Generate the image using the built-in image generation path available to this Codex session.
+2. If the built-in image tool saves the image outside the workspace by default, copy or move the selected generated PNG into `.cairnspan-imagegen/probe-image.png`.
+3. Verify that `.cairnspan-imagegen/probe-image.png` exists and is non-empty.
+4. Do not create or edit any other workspace files.
+
+If image generation is unavailable in this OAuth-backed Codex session, report that plainly. Treat that as a capability discovery result, not a launcher failure.
+
+Return a concise report with:
+- whether the built-in image generation capability was available,
+- whether `.cairnspan-imagegen/probe-image.png` was created,
+- the image file size in bytes if available,
+- whether any other files were created or modified,
+- and one final line:
+  imagegen-ok
+  if exactly one non-empty PNG image was created at the required path;
+  otherwise:
+  imagegen-failed: <reason>

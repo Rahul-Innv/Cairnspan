@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Check Readiness"
+  short_description: "Diagnose local Cairnspan setup readiness"
+  default_prompt: "Use $cairnspan-check-readiness to diagnose this machine's Cairnspan setup without launching a provider."
+policy:
+  allow_implicit_invocation: false

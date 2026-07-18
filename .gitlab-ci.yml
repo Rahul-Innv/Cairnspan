@@ -1,0 +1,20 @@
+image: python:3.12-slim
+
+stages:
+  - verify
+
+verify:
+  stage: verify
+  variables:
+    PYTHONDONTWRITEBYTECODE: "1"
+    PYTHONPATH: "skills/cairnspan/scripts"
+  script:
+    - python -m compileall -q skills/cairnspan/scripts tests
+    - python tests/run_tests.py full
+    - python skills/cairnspan/scripts/scan_artifacts.py README.md --format json
+    - python skills/cairnspan/scripts/scan_artifacts.py docs --format json
+    - python skills/cairnspan/scripts/scan_artifacts.py skills/cairnspan --format json
+    - python skills/cairnspan/scripts/scan_artifacts.py .agents --format json
+    - python skills/cairnspan/scripts/scan_artifacts.py .claude --format json
+    - python skills/cairnspan/scripts/release_readiness.py --profile source --format json
+  timeout: 20m

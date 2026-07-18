@@ -1,0 +1,22 @@
+This is a read-only Codex MCP visibility discovery probe.
+
+Report what MCP servers and MCP tools are configured or visible in this launched Codex session.
+
+Instructions:
+- Do not modify files.
+- Do not ask for elevated permissions.
+- Do not assume MCP configuration from Claude Code.
+- Report only what this Codex session can actually see.
+- If no MCP servers or tools are visible, say so plainly.
+- If MCP servers or tools are visible, list their names and briefly identify what each appears to provide.
+- Mention whether any tool calls or events appeared necessary to inspect the MCP visibility.
+
+End with exactly one final line in one of these forms:
+
+mcp-visibility-none
+
+or:
+
+mcp-visibility-<n>-servers
+
+where <n> is the number of MCP servers visible in this launched Codex session.

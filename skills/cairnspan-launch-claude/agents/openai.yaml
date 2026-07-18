@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Launch Claude"
+  short_description: "Run one bounded Claude Code edge"
+  default_prompt: "Use $cairnspan-launch-claude to dry-run one strictly isolated Claude Code handoff and return its receipt path."
+policy:
+  allow_implicit_invocation: false

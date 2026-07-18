@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Route Mailbox"
+  short_description: "Close one immutable mailbox exchange"
+  default_prompt: "Use $cairnspan-route-mailbox to validate this one immutable mailbox request and response pair."
+policy:
+  allow_implicit_invocation: false

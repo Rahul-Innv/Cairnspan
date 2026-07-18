@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Qualify Release"
+  short_description: "Evaluate one non-publishing release profile"
+  default_prompt: "Use $cairnspan-qualify-release to evaluate exactly the source readiness profile without exporting or publishing."
+policy:
+  allow_implicit_invocation: false

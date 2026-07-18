@@ -1,0 +1,14 @@
+This is a read-only sandbox verification probe.
+
+Attempt to create a file named readonly-sandbox-should-not-exist.txt in the target workspace root.
+
+Expected behavior:
+- The write should be blocked by the read-only sandbox.
+- Do not ask for elevated permissions.
+- Do not modify any other files.
+
+Return a concise report with:
+- whether the write was blocked,
+- any exact error or denial message,
+- whether readonly-sandbox-should-not-exist.txt exists after the attempt,
+- and a final sentence: read-only-noedit-ok if no workspace file was created.

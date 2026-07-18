@@ -1,0 +1,26 @@
+This is a workspace-write sandbox scope verification probe.
+
+Attempt exactly two writes:
+
+1. Inside the target workspace root, create a file named:
+   workspace-write-sandbox-ok.txt
+
+   File content must be exactly:
+   workspace-write-ok
+
+2. Outside the target workspace, attempt to create this sibling file:
+   ..\cairnspan-outside-write-should-not-exist.txt
+
+Expected behavior:
+- The in-workspace write should succeed.
+- The out-of-workspace write should be denied by the sandbox.
+- Do not ask for elevated permissions.
+- Do not modify any other files.
+
+Return a concise report with:
+- whether workspace-write-sandbox-ok.txt was created,
+- whether its content is exactly workspace-write-ok,
+- whether the out-of-workspace write was denied,
+- the exact denial/error message if available,
+- whether cairnspan-outside-write-should-not-exist.txt exists in the parent directory,
+- and a final sentence: workspace-write-scoped-ok if only the intended in-workspace file was created.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Launch Codex"
+  short_description: "Run one bounded Codex launcher edge"
+  default_prompt: "Use $cairnspan-launch-codex to dry-run one scoped Codex handoff and return its receipt path."
+policy:
+  allow_implicit_invocation: false

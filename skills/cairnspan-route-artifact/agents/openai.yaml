@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Route Artifact"
+  short_description: "Validate one design-to-PNG handoff"
+  default_prompt: "Use $cairnspan-route-artifact to prepare and structurally validate one design-to-static-PNG handoff."
+policy:
+  allow_implicit_invocation: false

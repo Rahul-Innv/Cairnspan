@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Probe Containment"
+  short_description: "Qualify one hostile containment case"
+  default_prompt: "Use $cairnspan-probe-containment to prepare one hostile-workspace containment case without executing or cleaning it up."
+policy:
+  allow_implicit_invocation: false

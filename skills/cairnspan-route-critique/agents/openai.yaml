@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Route Critique"
+  short_description: "Validate one critique-synthesis route"
+  default_prompt: "Use $cairnspan-route-critique to validate this Codex critique packet for one Claude synthesis route."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Probe Capability"
+  short_description: "Qualify one named Codex capability case"
+  default_prompt: "Use $cairnspan-probe-capability to prepare one immutable image-generation capability case without running it."
+policy:
+  allow_implicit_invocation: false

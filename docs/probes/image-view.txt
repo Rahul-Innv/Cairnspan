@@ -1,0 +1,19 @@
+This is a read-only Codex image-viewing tool capability probe using synthetic public data.
+
+The target workspace contains exactly one input image at:
+
+synthetic-view-probe.png
+
+Use Codex's `view_image` tool to inspect that file. Do not use native CLI image
+attachment, shell commands, Python, web search, MCP, or image generation. Do
+not modify the workspace.
+
+The prepared image is a solid blue square on a white background. If and only if
+the image-viewing tool starts successfully and the visible content matches that
+description, return exactly:
+
+view-image-ok: blue-square-on-white
+
+Otherwise return exactly:
+
+view-image-failed: <reason>

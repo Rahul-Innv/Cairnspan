@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cairnspan Run Two Way"
+  short_description: "Run one selected-order two-agent route"
+  default_prompt: "Use $cairnspan-run-two-way to dry-run one Codex-first two-edge nonce route with bounded aggregate limits."
+policy:
+  allow_implicit_invocation: false
