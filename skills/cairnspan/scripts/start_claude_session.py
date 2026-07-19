@@ -136,7 +136,7 @@ class CairnspanSummary:
     requested_model: str | None
     requested_effort: str | None
     prompt_file: str | None
-    prompt_sha256: str
+    prompt_sha256: str | None
     out_dir: str
     events_log: str
     transcript_log: str
@@ -145,7 +145,7 @@ class CairnspanSummary:
     timeout_seconds: int
     max_output_bytes: int
     max_prompt_bytes: int
-    prompt_bytes: int
+    prompt_bytes: int | None
     scrubbed_env: list[str]
     return_code: int | None = None
     session_id: str | None = None
@@ -1329,7 +1329,7 @@ def make_summary(
     run_id: str,
     cwd: Path,
     out_dir: Path,
-    prompt: str,
+    prompt: str | None,
     prompt_file: str | None,
     command: list[str],
     claude_bin: Path | None,
@@ -1350,7 +1350,7 @@ def make_summary(
         target_agent="claude-code",
         target_workspace=str(cwd),
         cwd=str(cwd),
-        command=redact_command(command, prompt, args.claude_arg + (args.mcp_config or [])),
+        command=redact_command(command, prompt or "", args.claude_arg + (args.mcp_config or [])),
         launcher_command_sha256=getattr(args, "launcher_command_sha256", None),
         claude_bin_resolved=str(claude_bin) if claude_bin else None,
         target_cli_version=None,
@@ -1366,7 +1366,7 @@ def make_summary(
         requested_model=args.model,
         requested_effort=args.effort,
         prompt_file=prompt_file,
-        prompt_sha256=sha256_text(prompt),
+        prompt_sha256=sha256_text(prompt) if prompt is not None else None,
         out_dir=str(out_dir),
         events_log=str(events_path),
         transcript_log=str(transcript_path),
@@ -1375,7 +1375,7 @@ def make_summary(
         timeout_seconds=args.timeout_seconds,
         max_output_bytes=args.max_output_bytes,
         max_prompt_bytes=args.max_prompt_bytes,
-        prompt_bytes=len(prompt.encode("utf-8")),
+        prompt_bytes=len(prompt.encode("utf-8")) if prompt is not None else None,
         scrubbed_env=sorted(
             name for name in SENSITIVE_AUTH_ENV_VARS if name in os.environ and not args.inherit_sensitive_auth_env
         ),
@@ -1384,22 +1384,23 @@ def make_summary(
     )
 
 
-def config_error(args: argparse.Namespace, run_id: str, message: str) -> int:
+def config_error(
+    args: argparse.Namespace,
+    run_id: str,
+    message: str,
+    prompt: str | None = None,
+    prompt_file: str | None = None,
+) -> int:
     out_dir = config_error_out_dir(args, run_id)
     out_dir.mkdir(parents=True, exist_ok=True)
-    empty_prompt = (
-        hostile_write_prompt("claude-code", args.hostile_write_nonce)
-        if args.hostile_write_nonce
-        else (args.prompt or "")
-    )
     cwd = args.cwd.resolve()
     summary = make_summary(
         args=args,
         run_id=run_id,
         cwd=cwd,
         out_dir=out_dir,
-        prompt=empty_prompt,
-        prompt_file=str(args.prompt_file.resolve()) if args.prompt_file else None,
+        prompt=prompt,
+        prompt_file=prompt_file,
         command=[],
         claude_bin=None,
         status="config_error",
@@ -1413,8 +1414,8 @@ def config_error(args: argparse.Namespace, run_id: str, message: str) -> int:
         fallback = safe_default_out_dir(args.cwd.resolve() if args.cwd.is_dir() else Path.cwd().resolve(), run_id)
         fallback.mkdir(parents=True, exist_ok=True)
         summary = make_summary(
-            args, run_id, args.cwd.resolve(), fallback, empty_prompt,
-            str(args.prompt_file.resolve()) if args.prompt_file else None, [], None, "config_error",
+            args, run_id, args.cwd.resolve(), fallback, prompt,
+            prompt_file, [], None, "config_error",
         )
         summary.return_code = 2
         summary.error_kind = "config"
@@ -1427,6 +1428,8 @@ def config_error(args: argparse.Namespace, run_id: str, message: str) -> int:
 def run(args: argparse.Namespace) -> int:
     run_id = make_run_id()
     prepared_profile: PreparedProfile | None = None
+    prompt: str | None = None
+    prompt_file: str | None = None
     try:
         validate_policy(args)
         prompt, prompt_file = read_prompt(args)
@@ -1445,13 +1448,13 @@ def run(args: argparse.Namespace) -> int:
                 cwd, "claude-code", args.hostile_write_nonce, args.protected_sentinel
             )
     except (FileNotFoundError, UnicodeError, ValueError) as exc:
-        return config_error(args, run_id, str(exc))
+        return config_error(args, run_id, str(exc), prompt, prompt_file)
 
     out_dir.mkdir(parents=True, exist_ok=True)
     try:
         prepare_receipt_paths(out_dir, args.overwrite_out_dir)
     except ValueError as exc:
-        return config_error(args, run_id, str(exc))
+        return config_error(args, run_id, str(exc), prompt, prompt_file)
     if prepared_profile and args.execute:
         write_manifest_atomic(out_dir / BEFORE_MANIFEST_NAME, prepared_profile.before_manifest)
 
