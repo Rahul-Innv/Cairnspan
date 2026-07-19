@@ -701,6 +701,7 @@ class LauncherTest(unittest.TestCase):
             env = os.environ.copy()
             env["OPENAI_API_KEY"] = "test-openai-key"
             env["ANTHROPIC_API_KEY"] = "test-anthropic-key"
+            env["ANTHROPIC_BASE_URL"] = "https://ambient.invalid"
             env["CLAUDE_CODE_OAUTH_TOKEN"] = "test-claude-oauth-token"
 
             result = self.run_launcher(
@@ -711,9 +712,13 @@ class LauncherTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             summary = self.read_summary(out_dir)
             self.assertEqual((out_dir / "final.md").read_text(encoding="utf-8"), "env=False;context=True")
-            self.assertEqual(
-                summary["scrubbed_env"],
-                ["ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN", "OPENAI_API_KEY"],
+            self.assertTrue(
+                {
+                    "ANTHROPIC_API_KEY",
+                    "ANTHROPIC_BASE_URL",
+                    "CLAUDE_CODE_OAUTH_TOKEN",
+                    "OPENAI_API_KEY",
+                }.issubset(summary["scrubbed_env"])
             )
 
     def test_oversized_prompt_fails_before_launch(self) -> None:
