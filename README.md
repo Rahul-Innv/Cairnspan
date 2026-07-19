@@ -5,6 +5,7 @@
 # Cairnspan
 
 [![pipeline status](https://gitlab.com/krahul02004/Cairnspan/badges/main/pipeline.svg)](https://gitlab.com/krahul02004/Cairnspan/-/commits/main)
+[![PyPI version](https://img.shields.io/pypi/v/cairnspan)](https://pypi.org/project/cairnspan/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Cairnspan is a local coordination layer for multi-agent, OAuth-backed delegation between coding agents such as Claude Code, Codex, Cursor, Gemini, and future local AI clients.
@@ -14,7 +15,7 @@ It is meant to let different agents use their individual strengths through the u
 ## Getting started
 
 - **Prerequisites:** Python 3.11 or newer. Cairnspan is developed and validated on Windows (Linux CI runs the platform-neutral subset).
-- **Install:** Cairnspan is not on PyPI yet, so install from a clone. Run `git clone https://gitlab.com/krahul02004/Cairnspan.git`, `cd Cairnspan`, then `pip install .`. That gives you the `cairnspan` console dispatcher. Fuller setup, including the dry-run-first workflow, is under [Quick Start](#quick-start).
+- **Install:** `pip install cairnspan` for the `cairnspan` console dispatcher, or install from a clone (`git clone https://gitlab.com/krahul02004/Cairnspan.git`, `cd Cairnspan`, `pip install .`) to run the launcher scripts directly. Fuller setup, including the dry-run-first workflow, is under [Quick Start](#quick-start).
 - **Check it works:** run `cairnspan doctor`. It runs a local, offline health check and prints one line per check plus an overall status token (for example `cairnspan-doctor-warn` when a local Codex or Claude binary resolves to an npm shell wrapper).
 
 ## 30-second demo
@@ -136,8 +137,8 @@ The deny-by-default posture is visible in the receipts themselves. The reverse e
 
 ## Quick Start
 
-Cairnspan is not yet published on PyPI. Install from a clone (as in the demo above) to get
-the `cairnspan` console dispatcher, or run the launcher scripts directly from the checkout.
+Install with `pip install cairnspan`, or from a clone (as in the demo above) to get
+the `cairnspan` console dispatcher and run the launcher scripts directly from the checkout.
 Each `cairnspan <tool>` subcommand runs the corresponding standalone script in a child
 interpreter, so the scripts' documented command-line contracts, receipts, and fail-closed
 behavior are unchanged.
