@@ -31,6 +31,11 @@ classifiers = [
     "Topic :: Software Development :: Build Tools",
 ]
 
+[project.urls]
+Repository = "https://gitlab.com/krahul02004/Cairnspan"
+Issues = "https://gitlab.com/krahul02004/Cairnspan/-/work_items"
+Changelog = "https://gitlab.com/krahul02004/Cairnspan/-/blob/main/CHANGELOG.md"
+
 [project.scripts]
 cairnspan = "cairnspan.cli:main"
 
