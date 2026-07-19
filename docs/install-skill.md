@@ -1,15 +1,16 @@
 # Install Cairnspan From A Checkout
 
-Cairnspan is not packaged yet. Use this repo-scoped path first, while the
-project remains private.
+Cairnspan is available on PyPI, but the historical `0.1.0` artifacts have no
+matching source tag or GitLab Release. Use this repo-scoped path when you need
+source-verifiable behavior from a reviewed commit.
 
-The planned `0.1.0-alpha.1` public target is a pinned Windows-only source
-release. Before treating any checkout as that release, verify the exact tag and
-run the source/public-alpha gates in `docs/release-readiness.md`.
+Do not treat the current checkout as provenance for the `0.1.0` artifacts.
+Before treating a future checkout as a release, verify its new patch-version
+tag and run the source/public-alpha gates in `docs/release-readiness.md`.
 
 ## Prerequisites
 
-- Python 3.10 or newer.
+- Python 3.11 or newer.
 - Codex installed and authenticated locally if you want Claude Code -> Codex.
 - Claude Code installed and authenticated locally if you want Codex -> Claude
   Code.

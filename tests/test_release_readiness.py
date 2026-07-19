@@ -28,7 +28,11 @@ class ReleaseReadinessTest(unittest.TestCase):
             path = root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("placeholder\n", encoding="utf-8")
-        (root / "VERSION").write_text("0.1.0-alpha.1\n", encoding="utf-8")
+        (root / "VERSION").write_text("0.1.1\n", encoding="utf-8")
+        (root / "pyproject.toml").write_text(
+            '[project]\nname = "cairnspan"\nversion = "0.1.1"\n',
+            encoding="utf-8",
+        )
         (root / "README.md").write_text(
             "Do not describe Cairnspan as production-ready.\n"
             "Do not describe Cairnspan as enterprise-ready or three-agent capable\n",
@@ -44,14 +48,14 @@ class ReleaseReadinessTest(unittest.TestCase):
         root = self.make_source_root()
         report = release_readiness.build_report(root, "source", scanner=self.clean_scanner)
         self.assertTrue(report["ready"])
-        self.assertEqual(report["version"], "0.1.0-alpha.1")
+        self.assertEqual(report["version"], "0.1.1")
 
-    def test_source_profile_rejects_non_alpha_version(self) -> None:
+    def test_source_profile_rejects_mismatched_version(self) -> None:
         root = self.make_source_root()
         (root / "VERSION").write_text("1.0.0\n", encoding="utf-8")
         report = release_readiness.build_report(root, "source", scanner=self.clean_scanner)
         self.assertFalse(report["ready"])
-        version_check = next(item for item in report["checks"] if item["id"] == "alpha-version")
+        version_check = next(item for item in report["checks"] if item["id"] == "source-version")
         self.assertEqual(version_check["status"], "block")
 
     def test_public_alpha_binds_tag_and_attestations_to_commit(self) -> None:
@@ -77,7 +81,7 @@ class ReleaseReadinessTest(unittest.TestCase):
             if args == ("remote",):
                 return 0, "origin"
             if args == ("tag", "--points-at", "HEAD"):
-                return 0, "v0.1.0-alpha.1"
+                return 0, "v0.1.1"
             raise AssertionError(args)
 
         report = release_readiness.build_report(
@@ -99,7 +103,7 @@ class ReleaseReadinessTest(unittest.TestCase):
                 ("rev-parse", "HEAD"): (0, commit),
                 ("status", "--porcelain", "--untracked-files=all"): (0, ""),
                 ("remote",): (0, "origin"),
-                ("tag", "--points-at", "HEAD"): (0, "v0.1.0-alpha.1"),
+                ("tag", "--points-at", "HEAD"): (0, "v0.1.1"),
             }
             return responses[args]
 
@@ -108,6 +112,35 @@ class ReleaseReadinessTest(unittest.TestCase):
         blocked = {item["id"] for item in report["checks"] if item["status"] == "block"}
         self.assertIn("write-hostile-matrix", blocked)
         self.assertIn("release-attestations", blocked)
+
+    def test_public_alpha_refuses_old_or_downgraded_versions(self) -> None:
+        for version in ("0.1.0", "0.0.1"):
+            with self.subTest(version=version):
+                root = self.make_source_root()
+                (root / "VERSION").write_text(f"{version}\n", encoding="utf-8")
+                (root / "pyproject.toml").write_text(
+                    f'[project]\nname = "cairnspan"\nversion = "{version}"\n',
+                    encoding="utf-8",
+                )
+                commit = "c" * 40
+
+                def git(_root: Path, *args: str) -> tuple[int, str]:
+                    responses = {
+                        ("rev-parse", "HEAD"): (0, commit),
+                        ("status", "--porcelain", "--untracked-files=all"): (0, ""),
+                        ("remote",): (0, "origin"),
+                        ("tag", "--points-at", "HEAD"): (0, f"v{version}"),
+                    }
+                    return responses[args]
+
+                report = release_readiness.build_report(
+                    root,
+                    "public-alpha",
+                    scanner=self.clean_scanner,
+                    git=git,
+                )
+                blocked = {item["id"] for item in report["checks"] if item["status"] == "block"}
+                self.assertIn("new-release-version", blocked)
 
 
 if __name__ == "__main__":

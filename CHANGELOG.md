@@ -8,7 +8,13 @@ Semantic Versioning once a release is tagged.
 - Keep three-agent orchestration, enterprise controls, and additional adapters
   on the roadmap after the bounded two-agent public alpha.
 
-## [0.1.0-alpha.1] - Unreleased
+## [0.1.0] - 2026-07-19
+
+This version was published to PyPI without a matching Git tag or GitLab
+Release. The source tree records what was published, but does not claim that
+the current commit is the provenance of those artifacts. Use a new reviewed
+patch version for the next release; do not create a retrospective `v0.1.0`
+tag without byte-for-byte artifact provenance.
 
 - Harden Codex and Claude Code launchers with typed permissions, bounded
   execution, structured receipts, native version pins, strict protocol parsing,
