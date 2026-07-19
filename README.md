@@ -56,7 +56,7 @@ Real output, trimmed (machine-specific paths replaced with placeholders):
 
 The prompt is hashed and redacted, known provider environment overrides are scrubbed from the child, and the exact command that would run is recorded. Replace `--dry-run` with `--execute` to launch the real session under the same contract.
 
-## Why It Exists
+## Why it exists
 
 The long-term goal is governed multi-agent interaction: route each bounded task
 to the model or client best suited for it, then bring the result back with proof.
@@ -75,7 +75,7 @@ Cairnspan makes those handoffs explicit and auditable. A run should answer who a
 
 The core path has no Cairnspan server, daemon, database, or hosted backend. It launches a target client, captures receipts, verifies cleanup, and exits. It still consumes provider-specific subscription or API limits, provider network access, local CPU/RAM/disk, and any model-reported cost. As of 2026-07-12, Anthropic documents a separate monthly Agent SDK credit for subscription-backed Agent SDK and `claude -p` usage, effective June 15, 2026. Provider limits and billing can change; recheck the current provider documentation before live or release planning.
 
-## What's Verified
+## What's verified
 
 Cairnspan is a source-public alpha hosted at
 [gitlab.com/krahul02004/Cairnspan](https://gitlab.com/krahul02004/Cairnspan). Version
@@ -99,7 +99,7 @@ and the open gates) is preserved in [`docs/verification.md`](docs/verification.m
 
 Do not describe Cairnspan as production-ready. Do not describe Cairnspan as enterprise-ready or three-agent capable until the adapter contract, routing policy, data-classification gates, provider-boundary receipts, and multi-target pressure tests in `docs/verification.md` are complete; the bounded two-agent routes above are what is verified today.
 
-## Safety Model
+## Safety model
 
 - Cairnspan is designed not to copy, store, or expose OAuth tokens.
 - It launches local authenticated clients and records observable run metadata.
@@ -137,7 +137,7 @@ The deny-by-default posture is visible in the receipts themselves. The reverse e
 }
 ```
 
-## Quick Start
+## Quick start
 
 Install with `pip install cairnspan`, or from a clone (as in the demo above) to get
 the `cairnspan` console dispatcher and run the launcher scripts directly from the checkout.
@@ -245,13 +245,13 @@ The bounded route additionally writes an immutable `route-plan.json`, a final `r
 
 Runtime artifacts may contain prompts, paths, model output, and tool output. Keep them private unless explicitly redacted.
 
-## Platform Support
+## Platform support
 
 The session tooling is developed and validated on Windows. Linux CI runs the
 platform-neutral subset; suites that depend on Windows-only file-metadata
 semantics or Job Object containment are skipped off Windows.
 
-## Project Docs
+## Project docs
 
 - `docs/install-skill.md`: repo-scoped install and first-probe path
 - `docs/live-test-runbook.md`: reproducible strict-MCP/no-edit live probe
