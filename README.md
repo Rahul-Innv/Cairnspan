@@ -8,15 +8,15 @@
 [![PyPI version](https://img.shields.io/pypi/v/cairnspan)](https://pypi.org/project/cairnspan/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Cairnspan is a local coordination layer for multi-agent, OAuth-backed delegation between coding agents such as Claude Code, Codex, Cursor, Gemini, and future local AI clients.
+Cairnspan is a local coordination layer for bounded, receipt-producing task handoffs between independently authenticated local agent harnesses.
 
-It is meant to let different agents use their individual strengths through the user's already-authenticated local clients. It is designed not to broker OAuth tokens, wrap raw model APIs as the primary path, or pretend that different agents share tools, context, approvals, auth, or runtime state.
+It lets multiple harnesses use their distinct capabilities while preserving separate tools, context, approvals, authentication, and runtime state. It does not broker OAuth tokens or treat raw model APIs as the primary path.
 
 ## Getting started
 
 - **Prerequisites:** Python 3.11 or newer. Cairnspan is developed and validated on Windows (Linux CI runs the platform-neutral subset).
 - **Install:** `pip install cairnspan` for the `cairnspan` console dispatcher, or install from a clone (`git clone https://gitlab.com/krahul02004/Cairnspan.git`, `cd Cairnspan`, `pip install .`) to run the launcher scripts directly. Fuller setup, including the dry-run-first workflow, is under [Quick Start](#quick-start).
-- **Check it works:** run `cairnspan doctor`. It runs a local, offline health check and prints one line per check plus an overall status token (for example `cairnspan-doctor-warn` when a local Codex or Claude binary resolves to an npm shell wrapper).
+- **Check it works:** run `cairnspan doctor`. It runs a local, offline health check and prints one line per check plus an overall status token (for example `cairnspan-doctor-warn` when a configured harness executable resolves to an npm shell wrapper).
 
 ## 30-second demo
 
@@ -61,15 +61,13 @@ The prompt is hashed and redacted, known provider environment overrides are scru
 The long-term goal is governed multi-agent interaction: route each bounded task
 to the model or client best suited for it, then bring the result back with proof.
 
-Some agent capabilities live in local authenticated clients rather than raw APIs:
+Some agent capabilities live in local authenticated harnesses rather than raw APIs:
 
-- Codex account/session behavior
-- Codex skills such as `$imagegen`
-- Codex MCP/plugin configuration
-- Claude Code project context and extension workflows
-- local approval and sandbox policy
-- Cursor workspace/agent UX and skill/MCP ecosystem
-- future model-specific strengths such as Gemini long-context or research-heavy flows
+- harness-owned account and session behavior
+- harness-specific skills, plugins, tools, and extension workflows
+- project and workspace context held by each local client
+- local approval, sandbox, and execution policy
+- model-specific strengths without shared credentials or runtime state
 
 Cairnspan makes those handoffs explicit and auditable. A run should answer who asked, which agent ran, what command was used, what permissions were granted, what logs prove the outcome, and what should happen next.
 

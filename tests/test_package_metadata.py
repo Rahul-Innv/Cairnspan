@@ -9,6 +9,38 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PackageMetadataTest(unittest.TestCase):
+    def test_discovery_metadata_is_provider_neutral(self) -> None:
+        metadata = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+        project = metadata["project"]
+        self.assertEqual(
+            project["description"],
+            "Bounded, receipt-producing task handoffs between independently "
+            "authenticated local agent harnesses.",
+        )
+        self.assertEqual(
+            project["keywords"],
+            [
+                "agents",
+                "agent-harnesses",
+                "multi-agent",
+                "delegation",
+                "local-first",
+                "cli",
+                "receipts",
+            ],
+        )
+        discovery_copy = " ".join([project["description"], *project["keywords"]]).lower()
+        for provider_name in (
+            "anthropic",
+            "claude",
+            "codex",
+            "cursor",
+            "gemini",
+            "google",
+            "openai",
+        ):
+            self.assertNotIn(provider_name, discovery_copy)
+
     def test_project_urls_link_to_canonical_public_surfaces(self) -> None:
         metadata = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
         self.assertEqual(
