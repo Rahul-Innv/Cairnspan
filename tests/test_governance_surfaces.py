@@ -46,6 +46,17 @@ class GovernanceSurfacesTest(unittest.TestCase):
         ):
             self.assertNotIn(title_case_heading, readme)
 
+    def test_security_policy_names_the_private_reporting_channel(self) -> None:
+        security = (ROOT / "SECURITY.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "contact-project+krahul02004-cairnspan-84576401-issue-@incoming.gitlab.com",
+            security,
+        )
+        self.assertIn("confidential Service Desk ticket", security)
+        self.assertNotIn("While this repository is private", security)
+        self.assertNotIn("Before public release", security)
+
 
 if __name__ == "__main__":
     unittest.main()
