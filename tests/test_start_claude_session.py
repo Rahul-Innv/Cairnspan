@@ -348,6 +348,30 @@ class ClaudeLauncherTest(unittest.TestCase):
             self.assertEqual(summary["status"], "config_error")
             self.assertEqual(summary["requested_model"], "claude-sonnet-5")
             self.assertEqual(summary["requested_effort"], "high")
+            self.assertIsNone(summary["prompt_file"])
+            self.assertIsNone(summary["prompt_sha256"])
+            self.assertIsNone(summary["prompt_bytes"])
+
+    def test_config_error_after_prompt_file_read_preserves_prompt_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            temp_dir = Path(tmp)
+            workspace = temp_dir / "workspace"
+            workspace.mkdir()
+            out_dir = workspace / "out"
+            prompt_file = temp_dir / "prompt.txt"
+            prompt_bytes = b"proof"
+            prompt_file.write_bytes(prompt_bytes)
+            result = self.run_launcher(
+                "--cwd", str(workspace), "--out-dir", str(out_dir),
+                "--prompt-file", str(prompt_file), "--max-prompt-bytes", "4",
+            )
+
+            self.assertEqual(result.returncode, 2)
+            summary = self.read_summary(out_dir)
+            self.assertIn("exceeding --max-prompt-bytes=4", summary["error"])
+            self.assertEqual(summary["prompt_file"], str(prompt_file.resolve()))
+            self.assertEqual(summary["prompt_sha256"], hashlib.sha256(prompt_bytes).hexdigest())
+            self.assertEqual(summary["prompt_bytes"], len(prompt_bytes))
 
     def test_all_effort_values_and_omission_have_one_deterministic_mapping(self) -> None:
         for effort in (None, "low", "medium", "high", "xhigh", "max"):
@@ -647,6 +671,7 @@ class ClaudeLauncherTest(unittest.TestCase):
             env = os.environ.copy()
             env["OPENAI_API_KEY"] = "test-openai-key"
             env["ANTHROPIC_API_KEY"] = "test-anthropic-key"
+            env["ANTHROPIC_BASE_URL"] = "https://ambient.invalid"
             env["CLAUDE_CODE_OAUTH_TOKEN"] = "test-claude-oauth-token"
 
             result = self.run_launcher(
@@ -657,9 +682,13 @@ class ClaudeLauncherTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             summary = self.read_summary(out_dir)
             self.assertEqual((out_dir / "final.md").read_text(encoding="utf-8"), "env=False;context=True")
-            self.assertEqual(
-                summary["scrubbed_env"],
-                ["ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN", "OPENAI_API_KEY"],
+            self.assertTrue(
+                {
+                    "ANTHROPIC_API_KEY",
+                    "ANTHROPIC_BASE_URL",
+                    "CLAUDE_CODE_OAUTH_TOKEN",
+                    "OPENAI_API_KEY",
+                }.issubset(summary["scrubbed_env"])
             )
 
     def test_oversized_prompt_fails_before_launch(self) -> None:

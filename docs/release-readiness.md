@@ -16,24 +16,28 @@ Run:
 python skills\cairnspan\scripts\release_readiness.py --profile source --format json
 ```
 
-## 2. Public Two-Agent Alpha
+## 2. Next Reviewed Public Release
 
-`public-alpha` is the first publishable target. Its exact claim is:
+The command keeps the `public-alpha` profile name for compatibility. It now
+means the next reviewed public release while the product remains alpha in
+maturity. Its exact claim is:
 
 > Cairnspan is an experimental, owner-local coordination layer with a verified,
 > bounded two-agent text route between installed Codex and Claude Code clients
 > on Windows. It is not production-ready, enterprise-ready, cross-platform, or
 > three-agent capable.
 
-Three-agent work is not a prerequisite for this release. Packaging is also not
-required: `0.1.0-alpha.1` may be a pinned source release using the repo-scoped
-skill installation path.
+Three-agent work is not a prerequisite for this release. Version `0.1.0` was
+already published to PyPI without a matching Git tag or GitLab Release. Do not
+retroactively tag a newer commit as `v0.1.0`. Before this profile can pass,
+`VERSION`, `pyproject.toml`, and the package version must be advanced together
+to a new reviewed patch version (expected next version: `0.1.1`).
 
-Before the alpha is published, all of these must be true:
+Before the next release is published, all of these must be true:
 
 - the complete deterministic test, compile, skill-validation, scan, and diff
   gate passes against the exact candidate commit;
-- the source tree is clean, a canonical remote exists, and tag `v0.1.0-alpha.1`
+- the source tree is clean, a canonical remote exists, and the new version tag
   points at the reviewed commit;
 - the current-facing public docs and fixtures receive human review after the
   scanner passes;

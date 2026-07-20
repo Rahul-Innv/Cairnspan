@@ -377,9 +377,10 @@ Current state:
 
 ## Public Alpha Release Candidate Gate
 
-- [x] Add planned version `0.1.0-alpha.1`, a changelog, and an exact claim ladder
-  separating source-ready, public two-agent alpha, production, enterprise, and
-  three-agent readiness.
+- [x] Reconcile the source version with the published `0.1.0`, record that its
+  artifacts have no matching source tag or GitLab Release, and retain an exact
+  claim ladder separating source-ready, public two-agent alpha, production,
+  enterprise, and three-agent readiness.
 - [x] Add an offline release checker with source, public-alpha, and production
   profiles plus four focused tests for alpha versioning, Git/tag state, exact
   commit-bound attestations, and the live write-hostile blocker.
@@ -392,9 +393,11 @@ Current state:
 - [x] Source profile reports 14 passes and 0 blockers.
 - [x] After expanding root release-metadata scanning, pass the final fast tier:
   122 tests in 120.540 seconds with 1 expected Windows symlink-privilege skip.
-- [ ] Public-alpha profile passes. Current blocker groups are the dirty candidate
-  state, missing canonical remote, missing `v0.1.0-alpha.1` tag, unclosed live
-  write-enabled hostile matrix, and missing commit-bound human attestations.
+- [ ] Public-alpha profile passes for a new reviewed patch version. Current
+  blocker groups include the historical untagged `0.1.0` version, dirty
+  candidate state, unclosed live write-enabled hostile matrix, and missing
+  commit-bound human attestations. Never satisfy this gate by retro-tagging the
+  current source as `v0.1.0`.
 
 ## Production Readiness Gate
 

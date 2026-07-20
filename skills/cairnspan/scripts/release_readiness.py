@@ -7,21 +7,29 @@ import json
 import re
 import subprocess
 import sys
+import tomllib
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Callable, Sequence
 
 
 ROOT = Path(__file__).resolve().parents[3]
-VERSION_PATTERN = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-alpha\.(0|[1-9]\d*)$")
+VERSION_PATTERN = re.compile(
+    r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-alpha\.(0|[1-9]\d*))?$"
+)
 COMMIT_PATTERN = re.compile(r"^[0-9a-fA-F]{40}(?:[0-9a-fA-F]{24})?$")
+UNATTESTED_PUBLISHED_VERSION = (0, 1, 0)
 REQUIRED_FILES = (
     ".gitlab-ci.yml",
     "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "LICENSE",
+    "pyproject.toml",
     "README.md",
+    "ROADMAP.md",
     "SECURITY.md",
+    "STATUS.md",
     "VERSION",
     "docs/install-skill.md",
     "docs/release-readiness.md",
@@ -34,10 +42,14 @@ REQUIRED_FILES = (
 SCAN_TARGETS = (
     ".gitlab-ci.yml",
     "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "LICENSE",
+    "pyproject.toml",
     "README.md",
+    "ROADMAP.md",
     "SECURITY.md",
+    "STATUS.md",
     "VERSION",
     "docs",
     "skills/cairnspan",
@@ -104,8 +116,24 @@ def source_checks(
     version_path = root / "VERSION"
     if version_path.is_file():
         version = version_path.read_text(encoding="utf-8").strip()
+    package_version: str | None = None
+    pyproject_path = root / "pyproject.toml"
+    if pyproject_path.is_file():
+        try:
+            package_version = tomllib.loads(pyproject_path.read_text(encoding="utf-8"))["project"]["version"]
+        except (KeyError, TypeError, tomllib.TOMLDecodeError):
+            package_version = None
     version_ok = bool(version and VERSION_PATTERN.fullmatch(version))
-    checks.append(Check("alpha-version", "pass" if version_ok else "block", f"planned version is {version}" if version_ok else "VERSION must be an alpha SemVer such as 0.1.0-alpha.1"))
+    version_matches = version_ok and package_version == version
+    checks.append(
+        Check(
+            "source-version",
+            "pass" if version_matches else "block",
+            f"VERSION and pyproject.toml agree on {version}"
+            if version_matches
+            else f"VERSION ({version}) and project.version ({package_version}) must agree on a valid SemVer",
+        )
+    )
 
     readme = (root / "README.md").read_text(encoding="utf-8") if (root / "README.md").is_file() else ""
     scope_markers = (
@@ -144,6 +172,22 @@ def public_alpha_checks(
     git: Callable[..., tuple[int, str]] = git_output,
 ) -> tuple[list[Check], str | None]:
     checks: list[Check] = []
+    version_match = VERSION_PATTERN.fullmatch(version or "")
+    version_core = (
+        tuple(int(item) for item in version_match.groups()[:3])
+        if version_match is not None
+        else None
+    )
+    is_new_version = version_core is not None and version_core > UNATTESTED_PUBLISHED_VERSION
+    checks.append(
+        Check(
+            "new-release-version",
+            "pass" if is_new_version else "block",
+            f"{version} is a new release version"
+            if is_new_version
+            else "0.1.0 was published without source provenance; advance to at least 0.1.1 and never retro-tag or downgrade current source",
+        )
+    )
     code, commit = git(root, "rev-parse", "HEAD")
     current_commit = commit if code == 0 and COMMIT_PATTERN.fullmatch(commit) else None
     checks.append(Check("git-commit", "pass" if current_commit else "block", f"candidate commit is {current_commit}" if current_commit else "cannot resolve candidate commit"))

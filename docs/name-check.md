@@ -33,9 +33,9 @@ brand.
 
 These are smoke checks, not legal clearance, registry guarantees, namespace or
 domain reservations, or proof that an unindexed/private use does not exist.
-Before publication or package release, re-run direct GitHub, GitLab, npm, PyPI,
-domain/RDAP, and relevant trademark-class checks and reserve the selected
-namespaces separately.
+Before the next package release or broader public naming claim, re-run direct
+GitHub, GitLab, npm, PyPI, domain/RDAP, and relevant trademark-class checks and
+reserve the selected namespaces separately.
 
 ## Rejected Or Superseded Names
 
@@ -70,6 +70,8 @@ CI entry, example, fixture, and document. The compatibility policy is a clean
 break: historical private receipts remain ignored, but new runs do not read or
 write legacy runtime names.
 
-The repository remains private alpha. The exact-name, namespace, domain,
+The repository is now source-public alpha, and PyPI `0.1.0` exists without a
+matching Git tag or GitLab Release. The exact-name, namespace, domain,
 package-registry, and legal trademark review must still be repeated immediately
-before publication; the 2026-07-11 smoke check is not a reservation.
+before the next package release or broader public naming claim; the 2026-07-11
+smoke check is not a reservation.
