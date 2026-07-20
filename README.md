@@ -83,7 +83,8 @@ Cairnspan is a source-public alpha hosted at
 the current source therefore does not claim provenance for those artifacts. The core
 two-agent paths have repeated live evidence, sanitized fixtures, and a copied-skill install
 proof behind them. Before the next release, use a new patch version and pass the reviewed
-release gate in `docs/release-readiness.md` against one clean tagged commit.
+release gate in `docs/release-readiness.md` against one clean tagged commit. Version
+`0.1.1` is that next reviewed source candidate; its tag and publication remain gated.
 
 | Route / capability | Evidence | Date |
 | --- | --- | --- |

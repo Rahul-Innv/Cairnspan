@@ -5,9 +5,15 @@ Semantic Versioning once a release is tagged.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-19
+
 - Reconcile naming and roadmap documentation with the source-public repository
-  and keep the next package release gated without inventing retrospective
+  without inventing retrospective
   `v0.1.0` provenance.
+- Preserve resolved prompt hashes and byte counts in launcher error receipts,
+  and make environment-scrubbing tests portable across ambient CI variables.
+- Add canonical project metadata, governance pointers, and the public security
+  policy used by the reviewed source tree.
 - Keep three-agent orchestration, enterprise controls, and additional adapters
   on the roadmap after the bounded two-agent public alpha.
 
@@ -29,3 +35,6 @@ tag without byte-for-byte artifact provenance.
   outside the verified alpha claim.
 - Add copied-skill installation proof, public fixture scanning, CI verification,
   and machine-checkable release-readiness profiles.
+
+[Unreleased]: https://gitlab.com/krahul02004/Cairnspan/-/compare/v0.1.1...main
+[0.1.1]: https://gitlab.com/krahul02004/Cairnspan/-/releases/v0.1.1
