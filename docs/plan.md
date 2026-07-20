@@ -210,10 +210,13 @@ Immediate sequence:
 7. Only after that pilot closes cleanly, prepare a product-specific finite
    batch and a separate integration plan; do not transfer product data before
    that plan is separately approved.
-8. Keep the repo private until `release_readiness.py --profile public-alpha`
-   passes on the exact clean tagged candidate with commit-bound human
-   attestations; re-run the Cairnspan namespace and legal checks immediately
-   before publication.
-9. Publish the honestly labeled Windows-only, owner-local two-agent source
-   alpha before three-agent work. Treat three-agent and enterprise controls as
-   later roadmap gates, not blockers for that scoped alpha.
+8. Keep the next package release and tag gated until
+   `release_readiness.py --profile public-alpha` passes on the exact clean
+   tagged candidate with commit-bound human attestations. The source repository
+   is already public; do not retroactively tag current source as `v0.1.0`.
+   Re-run the Cairnspan namespace and legal checks immediately before the next
+   tag or publication.
+9. Maintain the honestly labeled Windows-only, owner-local two-agent
+   source-public alpha before broadening to three-agent work. Treat three-agent
+   and enterprise controls as later roadmap gates, not blockers for that scoped
+   alpha.

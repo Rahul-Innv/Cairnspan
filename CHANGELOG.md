@@ -5,6 +5,9 @@ Semantic Versioning once a release is tagged.
 
 ## [Unreleased]
 
+- Reconcile naming and roadmap documentation with the source-public repository
+  and keep the next package release gated without inventing retrospective
+  `v0.1.0` provenance.
 - Keep three-agent orchestration, enterprise controls, and additional adapters
   on the roadmap after the bounded two-agent public alpha.
 

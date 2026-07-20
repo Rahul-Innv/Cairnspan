@@ -142,6 +142,15 @@ class ReleaseReadinessTest(unittest.TestCase):
                 blocked = {item["id"] for item in report["checks"] if item["status"] == "block"}
                 self.assertIn("new-release-version", blocked)
 
+        name_check = (ROOT / "docs" / "name-check.md").read_text(encoding="utf-8")
+        plan = (ROOT / "docs" / "plan.md").read_text(encoding="utf-8")
+        combined = f"{name_check}\n{plan}"
+        self.assertNotIn("The repository remains private alpha.", combined)
+        self.assertNotIn("Keep the repo private until", combined)
+        self.assertIn("source-public alpha", combined)
+        self.assertIn("next package release", combined)
+        self.assertIn("do not retroactively tag current source as `v0.1.0`", combined)
+
 
 if __name__ == "__main__":
     unittest.main()
