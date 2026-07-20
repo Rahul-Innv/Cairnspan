@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cairnspan"
 version = "0.1.1"
-description = "Bounded, receipt-producing delegation between local OAuth-backed coding agents such as Claude Code and Codex."
+description = "Bounded, receipt-producing task handoffs between independently authenticated local agent harnesses."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -13,10 +13,10 @@ license-files = ["LICENSE"]
 authors = [{ name = "Rahul Krishna" }]
 keywords = [
     "agents",
+    "agent-harnesses",
     "multi-agent",
     "delegation",
-    "claude-code",
-    "codex",
+    "local-first",
     "cli",
     "receipts",
 ]

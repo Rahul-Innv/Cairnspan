@@ -8,6 +8,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class GovernanceSurfacesTest(unittest.TestCase):
+    def test_readme_entry_copy_is_harness_first_and_provider_neutral(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        entry_copy = readme.split("## Getting started", 1)[0].lower()
+        self.assertIn("independently authenticated local agent harnesses", entry_copy)
+        for provider_name in (
+            "anthropic",
+            "claude",
+            "codex",
+            "cursor",
+            "gemini",
+            "google",
+            "openai",
+        ):
+            self.assertNotIn(provider_name, entry_copy)
+
     def test_conduct_and_pointer_files_are_present(self) -> None:
         conduct = (ROOT / "CODE_OF_CONDUCT.md").read_text(encoding="utf-8")
         roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")

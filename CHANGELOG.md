@@ -14,6 +14,9 @@ Semantic Versioning once a release is tagged.
   and make environment-scrubbing tests portable across ambient CI variables.
 - Add canonical project metadata, governance pointers, and the public security
   policy used by the reviewed source tree.
+- Generalize public positioning and discovery metadata around independently
+  authenticated local agent harnesses while retaining exact product names only
+  where commands, compatibility boundaries, or evidence require them.
 - Keep three-agent orchestration, enterprise controls, and additional adapters
   on the roadmap after the bounded two-agent public alpha.
 
