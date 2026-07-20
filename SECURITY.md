@@ -1,6 +1,7 @@
 # Security Policy
 
-Cairnspan is a prototype and should be treated as private, local tooling until the verification matrix is complete.
+Cairnspan is early-stage local tooling. Treat each capability as verified only to
+the extent recorded in the repository's verification matrix.
 
 ## Security Model
 
@@ -30,11 +31,16 @@ Do not publish raw `.cairnspan` run directories without review. Before sharing e
 
 ## Reporting Issues
 
-While this repository is private, record security issues in
-`docs/verification.md` without committing secrets or exploitable private data.
+Report a suspected vulnerability through the project's GitLab Service Desk:
 
-Before public release, enable the canonical Git host's private vulnerability-
-reporting channel and record that fact in the release attestation. Do not open a
-public issue containing a vulnerability, credential, private receipt, or local
-path. If the private reporting channel is unavailable, contact the repository
-owner through an established private channel and do not publish the details.
+`contact-project+krahul02004-cairnspan-84576401-issue-@incoming.gitlab.com`
+
+Emailing that address creates a confidential Service Desk ticket in the
+canonical project. Use a clear subject, describe the affected version and impact,
+and include the minimum reproduction details needed to start triage. Do not put
+credentials, private receipts, sensitive local paths, or other secrets in the
+initial message or in a public issue. The project owner will provide a secure
+follow-up channel if sensitive evidence is required.
+
+If the Service Desk is unavailable, contact the repository owner through an
+established private channel and do not publish the details.
