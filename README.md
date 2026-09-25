@@ -265,3 +265,9 @@ The remaining design, positioning, and research notes live alongside these in [`
 ## License
 
 MIT. See `LICENSE`.
+
+## Contributors
+
+- [Rahul Krishna](https://github.com/Rahul-Innv) - creator and contributor.
+- Claude Code - AI development assistance.
+- Codex - AI development assistance.
